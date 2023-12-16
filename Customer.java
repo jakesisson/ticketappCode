@@ -1,4 +1,7 @@
+package com.example.ticketproject;
+
 import java.util.ArrayList;
+
 public class Customer {
     private String customerName;
     private String cust_add;

@@ -1,119 +1,16 @@
 package com.example.ticketproject;
 
-import java.io.*;
-import java.nio.file.Files;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-public class TicketCompany {
-
-    private static TicketCompany instance;
-    static {
-        try {
-            instance = new TicketCompany();
-        } catch (IOException e) {
-            e.printStackTrace(); // Log the exception or handle it as required
-            instance = null; // Set instance to null if initialization fails
-        }
-    }
-
+public class demoInitializer {
     private final String catOrchestra = "CATOrch.csv";
     private final String catLoge = "CATLoge.csv";
     private final String gaSection = "GASection.csv";
-
-    private ArrayList<Performance> performances;
-    private ArrayList<Organization> orgs;
-    private ArrayList<Customer> customers;
-    private Map<String, ArrayList<Order>> customerOrders; //userID, ArrayList of Orders
-    private ArrayList<Integer> serials;
-    private ArrayList<Integer> orderIds;
-    private ArrayList<Client> clients;
-    private ArrayList<Venue> venues;
-    private Map<String, Integer> clientAssociatedVenue;
-    private final String orderID_file = "id_store.txt";
-    private final String serialID_file = "serial_store.txt";
-
-
-    public TicketCompany() throws IOException {
-        this.orgs = new ArrayList<>();
-        orgs.add(getCATOrg());
-        orgs.add(getLincolnOrg());
-        this.venues = new ArrayList<>();
-        Venue venue1 = getCATVenue();
-        Performance performance1 = getCATPerformance();
-        Performance performance2 = getLincolnPerformance();
-        venue1.add_Perf(performance1);
-        venues.add(venue1);
-        Venue venue2 = getLincolnVenue();
-        venue2.add_Perf(performance2);
-        venues.add(venue2);
-        this.customerOrders = new HashMap<>();
-        this.serials = new ArrayList<>();
-        this.orderIds= new ArrayList<Integer>();
-        this.customerOrders = new HashMap<>();
-        this.clients = getExistingClients();
-
-        this.performances = new ArrayList<>();
-        performances.add(performance1);
-        performances.add(performance2);
-        this.customers = new ArrayList<>();
-
-    }
-
-    private void loadNumbersFromFile() {
-        try {
-            List<String> existingOrders = Files.readAllLines(new File(orderID_file).toPath());
-            List<String> existingSerials = Files.readAllLines(new File(serialID_file).toPath());
-            for (String line : existingOrders) {
-                // Assuming one number per line
-                orderIds.add(Integer.parseInt(line.trim()));
-            }
-            for (String line : existingSerials) {
-                serials.add(Integer.parseInt(line.trim()));
-            }
-        } catch (IOException | NumberFormatException e) {
-            e.printStackTrace();
-            // Handle exceptions or throw them further
-        }
-    }
-
-    public ArrayList<Client> getExistingClients(){
-        ArrayList<Client> clients = new ArrayList<>();
-        Client client1 = new Client("ltg@gmail.com", "password123!");
-        client1.setVenueIDs(6679);
-        clients.add(client1);
-        Client client2 = new Client("ctg@gmail.com", "password123!");
-        client2.setVenueIDs(657);
-        clients.add(client2);
-        Client client3 = new Client("client@gmail.com", "password123!");
-        client3.setVenueIDs(6679);
-        clients.add(client3);
-        return clients;
-    }
-
-    public void addOrg(Organization organization) {
-        orgs.add(organization);
-    }
-
-    public void addCustomer(Customer customer) {
-        customers.add(customer);
-    }
-
-    public void addOrder(String userID, Order order) {
-        // Check if the customer already has an orders list
-        if (customerOrders.containsKey(userID)) {
-            // If yes, get the list and add the new order
-            ArrayList<Order> orders = customerOrders.get(userID);
-            orders.add(order);
-        } else {
-            // If not, create a new list, add the order, and put it in the map
-            ArrayList<Order> newOrders = new ArrayList<>();
-            newOrders.add(order);
-            customerOrders.put(userID, newOrders);
-        }
-    }
 
     public Organization getCATOrg() throws IOException{
         Organization cpag = new Organization("Cary Performing Arts Group","123 Cary Parkway",
@@ -132,12 +29,10 @@ public class TicketCompany {
         skipped.add("I");
         Section orchestra = sectionBuilder("A", skipped, catOrchestra);
         orchestra.setSectionName("Orchestra");
-        orchestra.setSectionPrice(2, 40.00);
         pinkFloyd.addSection(orchestra);
 
         Section loge = sectionBuilder("P", skipped, catLoge);
         loge.setSectionName("Loge");
-        loge.setSectionPrice(1, 30.00);
         pinkFloyd.addSection(loge);
         return pinkFloyd;
 
@@ -251,27 +146,5 @@ public class TicketCompany {
         // Extracting the file name without extension
         String fileName = filePath.substring(filePath.lastIndexOf('/') + 1);
         return fileName.substring(0, fileName.lastIndexOf('.'));
-    }
-
-
-    public static TicketCompany getInstance() {
-        if (instance == null) {
-            throw new IllegalStateException("Instance of TicketCompany was not initialized.");
-        }
-        return instance;
-    }
-
-    public Venue getclientAssociatedVenue(String userID){
-        for (Client client: clients){
-            if(client.getClientUSERID().equals(userID)){
-                Integer venueID = client.getVenueID();
-                for (Venue venue: venues){
-                    if(venue.getVenueID().equals(venueID)){
-                        return venue;
-                    }
-                }
-            }
-        }
-        return null;
     }
 }

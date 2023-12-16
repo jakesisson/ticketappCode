@@ -1,25 +1,26 @@
-public class Ticket extends Order{
+package com.example.ticketproject;
+
+import java.util.Map;
+
+public class Ticket {
     private Performance performance;
-    private String section;
-    private String row;
-    private String seat;
+    private Seat seat;
 
     private double ticketPrice;
-    private double fee; // redefine to have more in depth fee structure
+
 
     private int serial;
 
+    private Map<String, Double> fees;
+    private double tax;
 
-    public Ticket(int serial, Performance performance, double ticketPrice, double fee, String section, String row, String seat,
-                  int orderID, Customer customer) {
-        super(orderID, customer);
+
+    public Ticket(int serial, Performance performance, Seat seat) {
         this.serial = serial;
         this.performance = performance;
-        this.ticketPrice = ticketPrice;
-        this.fee = fee;
-        this.section = section;
-        this.row = row;
         this.seat = seat;
+        this.fees = performance.getFeeByType();
+        this.ticketPrice = seat.getPrice();
 
     }
 
@@ -31,27 +32,11 @@ public class Ticket extends Order{
         this.performance = performance;
     }
 
-    public String getSection() {
-        return section;
-    }
-
-    public void setSection(String section) {
-        this.section = section;
-    }
-
-    public String getRow() {
-        return row;
-    }
-
-    public void setRow(String row) {
-        this.row = row;
-    }
-
-    public String getSeat() {
+    public Seat getSeat() {
         return seat;
     }
 
-    public void setSeat(String seat) {
+    public void setSeat(Seat seat) {
         this.seat = seat;
     }
 
@@ -63,13 +48,6 @@ public class Ticket extends Order{
         this.ticketPrice = ticketPrice;
     }
 
-    public double getFee() {
-        return fee;
-    }
-
-    public void setFee(double fee) {
-        this.fee = fee;
-    }
 
     public int getSerial() {
         return serial;

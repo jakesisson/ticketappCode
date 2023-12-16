@@ -1,5 +1,8 @@
+package com.example.ticketproject;
+
 import java.util.ArrayList;
-public class Order {
+
+public class Order extends ArrayList<Order> {
     private Customer customer;
     private int orderID;
     private ArrayList<Ticket> tickets;

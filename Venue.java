@@ -1,36 +1,31 @@
+package com.example.ticketproject;
+
 import java.util.ArrayList;
-public class Venue extends Organization{
+
+public class Venue {
     private String venue_name;
     private String venue_add;
     private String venue_State;
     private String venue_Zip;
 
-    private String venue_policies;
-
-    private boolean refunds_auto;
-
-    private boolean refunds_by_request;
-
-    private boolean exchanges_auto;
-    private boolean exchanges_by_request;
-
     private ArrayList<Performance> performances;
 
     private SeatingChart defaultSeatingChart;
 
+    private String seatingChartLocation;
+
+    private Integer venueID;
+
 
     //If using inherited refund/exchange policies for Org
-    public Venue(String venue_name, String venue_add, String venue_State, String venue_Zip, String venue_policies,
-                 String org_name, String org_address, String org_State, String org_Zip, String primary_contact_email,
-                 String primary_contact_phone, String org_policies, boolean org_refunds_auto, boolean org_refunds_by_request,
-                 boolean org_exchanges_auto, boolean org_exchanges_by_request) {
-        super(org_name, org_address, org_State, org_Zip, primary_contact_email, primary_contact_phone, org_policies, org_refunds_auto,
-                org_refunds_by_request, org_exchanges_auto, org_exchanges_by_request);
-        this.venue_name = venue_name;
+    public Venue(String venueName, String venue_add, String venue_State, String venue_Zip, Integer venueID) {
         this.venue_add = venue_add;
+        this.venue_name = venueName;
+        this.venue_State = venue_State;
         this.venue_Zip = venue_Zip;
-        this.venue_policies = venue_policies;
-        this.performances = new ArrayList<Performance>();
+        this.venueID = venueID;
+        this.performances = new ArrayList<>();
+
     }
 
 
@@ -62,14 +57,6 @@ public class Venue extends Organization{
         this.venue_Zip = venue_Zip;
     }
 
-    public String getVenue_policies() {
-        return venue_policies;
-    }
-
-    public void setVenue_policies(String venue_policies) {
-        this.venue_policies = venue_policies;
-    }
-
     public void add_Perf(Performance performance) {
         performances.add(performance);
     }
@@ -79,5 +66,21 @@ public class Venue extends Organization{
 
     public void setDefaultSeatingChart(SeatingChart seatingChart) {
         this.defaultSeatingChart = seatingChart;
+    }
+
+    public String getSeatingChartLocation(){return this.seatingChartLocation;}
+
+    public void setSeatingChartLocation(String seatingChartLocation) {this.seatingChartLocation = seatingChartLocation;}
+
+    public Integer getVenueID() {
+        return venueID;
+    }
+
+    public void setVenueID(Integer venueID) {
+        this.venueID = venueID;
+    }
+
+    public ArrayList<Performance> getPerformances(){
+        return this.performances;
     }
 }
